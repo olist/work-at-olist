@@ -10,10 +10,10 @@ This repository contains a problem used to evaluate the candidate skills. It's i
 
 Hints:
 
-* Carefully read the specification to understand all the problem and artifact requirements before starting, if you dont understand something tell us;
+* Carefully read the specification to understand all the problem and artifact requirements before starting, if you don't understand something tell us;
 * Check the recommendations and reference material at the end of this specification;
 * We appreciate simplicity, so create a good project setup that will help us in your evaluation;
-* Please make tests ... we appreciate tests <3... tests makes the world better.
+* Please make tests ... we appreciate tests <3... tests make the world better.
 
 ## How to participate
 
@@ -25,7 +25,7 @@ Hints:
 3. Deploy your project on a host service (we recommend [Heroku](https://heroku.com));
 4. Apply for the position at our [career page](https://olist.gupy.io/) with:
     * Link to the fork on Github (or bitbucket/gitlab);
-    * Link to the project in a the deployed host service.
+    * Link to the project in the deployed host service.
 
 ## Specification
 
@@ -33,9 +33,9 @@ You should implement an application for a library to store book and authors data
 
 **This application must provide a HTTP REST API to attend the requirements.**
 
-### 1. Receive an csv with authors and import to database
+### 1. Receive a CSV file with authors and import to a database
 
-Given a CSV file with many authors (more than a million), you need to import this data to database. The csv file will have the following format:
+Given a CSV file with many authors (more than a million), you need to import this data to a database. The csv file will have the following format:
 
 ```
 name
@@ -47,12 +47,12 @@ Brian K. Jones
 J.K Rowling
 ```
 
-Each author record has the fields:
+Each author record in the database has the fields:
 
 * id (self-generated)
 * name
 
-You need to store this author data to complement the book data that will be stored afterwards (see item #3).
+You need to store this authors' data to complement the book data that will be stored afterwards (see item #3).
 
 _Extra tip: If you use Django Framework you can do something like this..._
 
@@ -81,14 +81,14 @@ Each book record has the fields:
 * publication_year
 * authors (more than one author can write a book)
 
-To get a book (in easy mode) we can filter by 4 fields (or a composition of these four):
+To retrieve a book (in easy mode) we can filter by 4 fields (or a composition of these four):
 
 * name
 * publication_year
 * edition
 * author
 
-But these 3 fields are optional, i can navigate a paginated list with all books data.
+But these 4 fields are optional, the endpoint can return a paginated list with all books' data.
 
 To create a book you need to send this payload (in json format) below:
 
@@ -124,7 +124,7 @@ To create a book you need to send this payload (in json format) below:
 
 ## Recommendations
 
-* Write tests! Please make tests ... we appreciate tests <3... tests makes the world better;
+* Write tests! Please make tests ... we appreciate tests <3... tests make the world better;
 * Practice the [12 Factor-App](http://12factor.net) concepts;
 * Use [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design))
   design principles;
