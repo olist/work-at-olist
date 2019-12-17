@@ -13,7 +13,7 @@ Hints:
 * Carefully read the specification to understand all the problem and artifact requirements before starting, if you don't understand something tell us;
 * Check the recommendations and reference material at the end of this specification;
 * We appreciate simplicity, so create a good project setup that will help us in your evaluation;
-* Please make tests ... we appreciate tests <3... tests makes the world better.
+* Please make tests ... we appreciate tests <3... tests make the world better.
 
 ## How to participate
 
