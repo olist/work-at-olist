@@ -35,7 +35,7 @@ You should implement an application for a library to store book and authors data
 
 ### 1. Receive a CSV with authors and import to database
 
-Given a CSV file with many authors (more than a million), you need a command to import the data into the database. The CSV file will have the following format:
+Given a CSV file with many authors (more than a million), you need to build a command to import the data into the database. The CSV file will have the following format:
 
 ```
 name
