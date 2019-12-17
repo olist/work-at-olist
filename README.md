@@ -124,7 +124,7 @@ To create a book you need to send this payload (in json format) below:
 
 ## Recommendations
 
-* Write tests! Please make tests ... we appreciate tests <3... tests makes the world better;
+* Write tests! Please make tests ... we appreciate tests <3... tests make the world better;
 * Practice the [12 Factor-App](http://12factor.net) concepts;
 * Use [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)) design principles;
 * Use programming good practices;
