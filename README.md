@@ -47,7 +47,7 @@ Brian K. Jones
 J.K Rowling
 ```
 
-Each author record has the fields:
+Each author record in the database must have the following fields:
 
 * id (self-generated)
 * name
@@ -81,7 +81,7 @@ Each book record has the fields:
 * publication_year
 * authors (more than one author can write a book)
 
-To get a book (in easy mode) we can filter by 4 fields (or a composition of these four):
+To retrieve a book (in easy mode) we can filter by 4 fields (or a composition of these four):
 
 * name
 * publication_year
