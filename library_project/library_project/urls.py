@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from books_app import views as books_views
 
 router = routers.DefaultRouter()
+router.register('authors', books_views.AuthorViewSet, basename="authors")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
