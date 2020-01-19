@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import environ
 from environ import Path
+import ast
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -30,7 +31,9 @@ SECRET_KEY = env_configuration.str('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_configuration.bool('DEBUG')
 
-ALLOWED_HOSTS = env_configuration.list('ALLOWED_HOSTS')
+ALLOWED_HOSTS = ast.literal_eval(env_configuration.str('ALLOWED_HOSTS'))
+print(ALLOWED_HOSTS)
+
 
 
 # Application definition
@@ -45,6 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'books_app',
+    'drf_yasg',
+
 ]
 
 MIDDLEWARE = [

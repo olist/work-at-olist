@@ -15,16 +15,31 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
+from rest_framework import routers, permissions
 from books_app import views as books_views
+
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
 
 router = routers.DefaultRouter()
 router.register('authors', books_views.AuthorViewSet, basename="authors")
 router.register('books', books_views.BookViewSet, basename="books")
 
 
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Library API",
+      default_version='v1',
+      description="API provided for Olist Library",
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('', include(router.urls)),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]
