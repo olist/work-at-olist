@@ -20,6 +20,8 @@ from books_app import views as books_views
 
 router = routers.DefaultRouter()
 router.register('authors', books_views.AuthorViewSet, basename="authors")
+router.register('books', books_views.BookViewSet, basename="books")
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
