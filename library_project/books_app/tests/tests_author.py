@@ -41,22 +41,23 @@ class AuthorViewsTest(TestCase):
         response = self.client.get("/authors/")
         self.assertEquals(response.status_code, 200)
     
-    def test_list_all_authors_content(self):
+    def test_list_all_authors_json_content(self):
         """
-            Test GET (list) authors request content
+            Test GET (list) authors response content
         """
         response = self.client.get("/authors/")
         self.assertEquals(response.status_code, 200)
         content = json.loads(response.content)
         self.assertEquals(content['count'], Author.objects.all().count())
-        self.assertEquals(len(content['results']), drf_configs['PAGE_SIZE'])
+        self.assertEquals(sorted(content['results'][0].keys()), sorted(['id', 'name']))
 
     def test_list_all_authors_pagination(self):
         """
-            Test first page retrieving all results possible for one page size
+            Test first page retrieving all results possible for one page size, full page of authors
         """
+        if len(self.AUTHORS) < drf_configs["PAGE_SIZE"]:
+            Author.objects.bulk_create((Author(name=f"author{x}") for x in range(drf_configs["PAGE_SIZE"]-len(self.AUTHORS))))
         response = self.client.get("/authors/?page=1")
-
         self.assertEquals(response.status_code, 200)
         content = json.loads(response.content)
         self.assertEquals(len(content['results']), drf_configs['PAGE_SIZE'])
@@ -65,6 +66,8 @@ class AuthorViewsTest(TestCase):
         """
             Test page with less than the page limit size
         """
+        if len(self.AUTHORS) < drf_configs["PAGE_SIZE"]:
+            Author.objects.bulk_create((Author(name=f"author{x}") for x in range(drf_configs["PAGE_SIZE"]+1)))
         response = self.client.get("/authors/?page=2")
 
         self.assertEquals(response.status_code, 200)
