@@ -27,9 +27,15 @@ class BookSerializer(serializers.ModelSerializer):
             self.fields['authors'] = serializers.SerializerMethodField()
     
     def get_authors(self, obj):
+        """
+            Get author data, using author serializer to provide id,name
+        """
         return AuthorSerializer(obj.authors, many=True).data
 
     def validate(self, data):
+        """
+            Overriding to avoid negative values (edition, publication_year) in POST/PUT/PATCH methods
+        """
         year = data.get("publication_year", None)
         edition = data.get("edition", None)
         if year and year <= 0:

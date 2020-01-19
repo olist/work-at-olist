@@ -16,6 +16,9 @@ class AuthorViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.G
     filterset_class = AuthorFilter
 
 class BookViewSet(viewsets.ModelViewSet):
+    """
+        Viewset for Book operations, all CRUD operations are available.
+    """
     queryset = Book.objects.all().order_by('name')
     serializer_class = BookSerializer
     filter_backends = (filters.DjangoFilterBackend,)
