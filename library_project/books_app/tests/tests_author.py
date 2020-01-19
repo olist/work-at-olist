@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+from rest_framework.test import APIClient
 
 
 from library_project.settings import REST_FRAMEWORK as drf_configs
@@ -8,7 +9,7 @@ import json
 
 class AuthorViewsTest(TestCase):
 
-    client = Client()
+    client = APIClient()
 
     AUTHORS = [
         'Mário de Andrade',
@@ -49,7 +50,7 @@ class AuthorViewsTest(TestCase):
         content = json.loads(response.content)
         self.assertEquals(content['count'], Author.objects.all().count())
         self.assertEquals(len(content['results']), drf_configs['PAGE_SIZE'])
-        
+
     def test_list_all_authors_pagination(self):
         """
             Test first page retrieving all results possible for one page size

@@ -1,4 +1,5 @@
 from django.test import TestCase, Client
+from rest_framework.test import APIClient
 
 from library_project.settings import REST_FRAMEWORK as drf_configs
 from books_app.models import Author, Book
@@ -10,7 +11,7 @@ import collections
 
 class AuthorViewsTest(TestCase):
 
-    client = Client()
+    client = APIClient()
 
     AUTHORS = [
         {'name':'Mário de Andrade'},
@@ -249,3 +250,49 @@ class AuthorViewsTest(TestCase):
         ids = list(map(lambda book: book.id, queryset))
         ids_response = list(map(lambda response_object: response_object['id'], content['results']))
         self.assertEquals(sorted(ids), sorted(ids_response))
+
+    def test_patch_book(self):
+        """
+            Test patch request to change one param
+        """
+        json_ = {"name": "Alternative name"}
+        response = self.client.patch("/books/1/", data=json_, content_type="application/json")
+        self.assertEquals(response.status_code, 200)
+        content = json.loads(response.content)
+        book = Book.objects.get(id=1)
+        self.assertEquals(book.name, json_['name'])
+
+    def test_patch_book_authors(self):
+        """
+            Test patch request update authors
+        """
+        json_ = {"authors": [1, 3]}
+        response = self.client.patch("/books/1/", data=json_, content_type="application/json")
+        self.assertEquals(response.status_code, 200)
+        content = json.loads(response.content)
+        book = Book.objects.get(id=1)
+        authors_ids = list(map(lambda book: book.id, book.authors.all()))
+        self.assertEquals(sorted(authors_ids), sorted(json_['authors']))
+    
+    def test_put_book(self):
+        """
+            Test put book
+        """
+        json_ = {"name": "TEST", "publication_year": 2000, "edition": 1,"authors": [1, 3]}
+        response = self.client.put("/books/1/", data=json_, content_type="application/json")
+        self.assertEquals(response.status_code, 200)
+        content = json.loads(response.content)
+        book = Book.objects.get(id=1)
+        self.assertEquals(BookSerializer(book).data, content)
+
+    def test_delete_book(self):
+        """
+            Teste deletion of a book
+        """
+        response = self.client.delete("/books/1/")
+        self.assertEquals(response.status_code, 204)
+        
+        response_get = self.client.get("/books/1/")
+        self.assertEquals(response.status_code, 204)
+        content = json.loads(response_get.content)
+        self.assertEquals({"detail": "Not found."}, content)
