@@ -30,10 +30,12 @@ class BookSerializer(serializers.ModelSerializer):
         return AuthorSerializer(obj.authors, many=True).data
 
     def validate(self, data):
-        if data.get("publication_year") <= 0:
+        year = data.get("publication_year", None)
+        edition = data.get("edition", None)
+        if year and year <= 0:
             raise serializers.ValidationError({'publication_year': ["publication_year must be a positive integer."]})
 
-        if data.get("edition") <= 0:
+        if edition and edition <= 0:
             raise serializers.ValidationError({'edition': ["edition must be a positive integer."]})
 
         return data
