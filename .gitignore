@@ -22,3 +22,6 @@ db.sqlite3
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# environment #
+.env
