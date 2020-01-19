@@ -11,21 +11,26 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
+from environ import Path
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+env_configuration = environ.Env()
+env_configuration.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '5+gq1#b5z@t!b=6$9n==ucnvp!#bd=wrx+w#wheqk$3@jcj@4p'
+SECRET_KEY = env_configuration.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env_configuration.bool('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env_configuration.list('ALLOWED_HOSTS')
 
 
 # Application definition
@@ -112,7 +117,7 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': env_configuration.int("PAGE_SIZE"),
 }
 
 # Internationalization
@@ -120,13 +125,14 @@ REST_FRAMEWORK = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = env_configuration.str("TIME_ZONE", default="UTC")
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = env_configuration.bool("USE_TZ", default=True)
+
 
 
 # Static files (CSS, JavaScript, Images)
