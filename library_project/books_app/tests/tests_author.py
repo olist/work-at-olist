@@ -41,20 +41,19 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(response.status_code, 200)
     
     def test_list_all_authors_content(self):
-        response = self.client.get("/authors/")
-        self.assertEquals(response.status_code, 200)
-        content = json.loads(content)
-        self.assertEquals(content['count'], Author.objects.all().count())
-        self.assertEquals(len(content['results']), drf_configs['PAGE_SIZE'])
-    
-    def test_list_all_authors_content(self):
+        """
+            Test GET (list) authors request content
+        """
         response = self.client.get("/authors/")
         self.assertEquals(response.status_code, 200)
         content = json.loads(response.content)
         self.assertEquals(content['count'], Author.objects.all().count())
         self.assertEquals(len(content['results']), drf_configs['PAGE_SIZE'])
-    
+        
     def test_list_all_authors_pagination(self):
+        """
+            Test first page retrieving all results possible for one page size
+        """
         response = self.client.get("/authors/?page=1")
 
         self.assertEquals(response.status_code, 200)
@@ -62,6 +61,9 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(len(content['results']), drf_configs['PAGE_SIZE'])
 
     def test_list_all_authors_page_with_less_results(self):
+        """
+            Test page with less than the page limit size
+        """
         response = self.client.get("/authors/?page=2")
 
         self.assertEquals(response.status_code, 200)
@@ -69,6 +71,9 @@ class AuthorViewsTest(TestCase):
         self.assertTrue(len(content['results']) < drf_configs['PAGE_SIZE'])
     
     def test_search_authors_by_exact_name(self):
+        """
+            Test the name filtering in authors request with full name
+        """
         response = self.client.get(f"/authors/?name={self.AUTHORS[2]}")
         self.assertEquals(response.status_code, 200)
         # should get only one Author
@@ -76,6 +81,10 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(len(content['results']), 1)
 
     def test_search_authors_containing_query(self):
+        """
+            Test the name filtering in authors request, need to retrieve more than one content,
+            if substring is present in more than one name
+        """
         response = self.client.get(f"/authors/?name=José")
         self.assertEquals(response.status_code, 200)
         content = json.loads(response.content)
@@ -83,12 +92,18 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(len(content['results']), 2)
 
     def test_search_authors_retrieves_nothing(self):
+        """
+            Test GET request returns empty list when filtering a name
+        """
         response = self.client.get(f"/authors/?name=Gustavo")
         self.assertEquals(response.status_code, 200)
         content = json.loads(response.content)
         self.assertEquals(len(content['results']), 0)
     
     def test_get_author(self):
+        """
+            Test specific author content
+        """
         response = self.client.get(f"/authors/1/")
         self.assertEquals(response.status_code, 200)
         # should get the first author in thist test database list
@@ -96,6 +111,9 @@ class AuthorViewsTest(TestCase):
         self.assertEquals(content['name'], self.AUTHORS[0])
 
     def test_get_author_fails(self):
+        """
+            Test not to retrieve an author, when invalid id is passed
+        """
         response = self.client.get(f"/authors/20/")
         # there is no author with id 10, should fail
         self.assertEquals(response.status_code, 404)
