@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432"
+    environment:
+      - POSTGRES_PASSWORD:'0L!$tWoRk'
+  api:
+    build: .
+    command: python manage.py runserver 0.0.0.0:3000
+    volumes:
+      - .:/code
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
