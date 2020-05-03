@@ -5,6 +5,8 @@ verify_ssl = true #garante a segurança dos pacotes instalados
 
 [dev-packages]
 flake8 = "*"
+pytest-cov = "*"
+codecov = "*"
 
 [packages]
 django = "*"
