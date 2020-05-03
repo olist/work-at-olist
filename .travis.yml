@@ -3,6 +3,11 @@ language: python
 python:
   - 3.8
 
+services:
+  postgresql
+addons:
+  postgresql: '9.5'
+
 env:
   global:
     - PIPENV_VENV_IN_PROJECT=1 #pipenv cria ambiente virtual dentro do projeto
@@ -13,8 +18,11 @@ install:
   - pipenv sync --dev #faz o build a partir do aquivo Pipfile.lock
   - cp contrib/env-sample .env
 
+before_script:
+  - psql -c "CREATE DATABASE testdb;" -U postgres
+
 script:
-  - pipenv run flake8 . #executa comando flake8
+  - pipenv run flake8 #executa comando flake8
   - pipenv run pytest --cov=olist
 
 after_success:
