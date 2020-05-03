@@ -1,3 +1,3 @@
 DEBUG=True
-SECRET_KEY=defina_seu_secret_key
-ALLOWED_HOSTS =localhost,127.0.0.1
+SECRET_KEY=defina sua chave secreta
+ALLOWED_HOSTS=localhost,127.0.0.1

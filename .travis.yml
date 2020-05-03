@@ -11,11 +11,11 @@ env:
 install:
   - pip install pipenv
   - pipenv sync --dev #faz o build a partir do aquivo Pipfile.lock
+  - cp contrib/env-sample .env
 
 script:
   - pipenv run flake8 . #executa comando flake8
-  - pipenv run pytest
-  - cp contrib/env-sample .env
+  - pipenv run pytest --cov=olist
 
 after_success:
   - pipenv run codecov #exibi cobertura apos push
