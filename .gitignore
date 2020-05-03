@@ -110,6 +110,7 @@ ENV/
 env.bak/
 venv.bak/
 .idea
+staticfiles/
 
 # Spyder project settings
 .spyderproject
