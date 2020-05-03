@@ -1,1 +1,2 @@
-CONFIG=True
+DEBUG=True
+SECRET_KEY=defina_seu_secret_key
