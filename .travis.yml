@@ -10,7 +10,7 @@ env:
 
 install:
   - pip install pipenv
-  - pipenv sync -d #faz o build a partir do aquivo Pipfile.lock
+  - pipenv sync --dev #faz o build a partir do aquivo Pipfile.lock
 
 script:
   - pipenv run flake8 . #executa comando flake8
