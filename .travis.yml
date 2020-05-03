@@ -1,21 +1,21 @@
 language: python
 
 python:
-  - '3.8'
+  - 3.8
 
 env:
   global:
-    - 'PIPENV_VENV_IN_PROJECT=1' #pipenv cria ambiente virtual dentro do projeto
-    - 'PIPENV_IGNORE_VIRTUALENVS=1' #ignora outro ambiente virtual
+    - PIPENV_VENV_IN_PROJECT=1 #pipenv cria ambiente virtual dentro do projeto
+    - PIPENV_IGNORE_VIRTUALENVS=1 #ignora outro ambiente virtual
 
 install:
-  - 'pip install pipenv'
-  - 'pipenv sync --dev' #faz o build a partir do aquivo Pipfile.lock
+  - pip install pipenv
+  - pipenv sync --dev #faz o build a partir do aquivo Pipfile.lock
 
 script:
-  - 'pipenv run flake8 .' #executa comando flake8
-  - 'pipenv run pytest --cov=olist'
-  - 'cp contrib/env-sample .env'
+  - pipenv run flake8 . #executa comando flake8
+  - pipenv run pytest
+  - cp contrib/env-sample .env
 
 after_success:
-  - 'pipenv run codecov' #exibi cobertura apos push
+  - pipenv run codecov #exibi cobertura apos push
