@@ -1,0 +1,3 @@
+requirements: #informo arquivos que contem dependencias
+  - Pipfile
+  - Pipfile.lock

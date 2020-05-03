@@ -1,0 +1,13 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true #garante a segurança dos pacotes instalados
+
+[dev-packages]
+flake8 = "*"
+
+[packages]
+django = "*"
+
+[requires]
+python_version = "3.8"
