@@ -103,9 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -117,3 +117,26 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID')
+
+# STORAGE CONFIGURATION IN S3 AWS
+
+if AWS_ACCESS_KEY_ID:
+    AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}  # controle tempo de cache do s3
+    AWS_PRELOAD_METADATA = True
+    AWS_AUTO_CREATE_BUCKET = False  # nao criar bucket auto
+    AWS_QUERYSTRING_AUTH = True  # gerar url assinadas
+    AWS_S3_CUSTOM_DOMAIN = None  # utilizar proprio dominio do s3
+    AWS_DEFAULT_ACL = 'private'  # arquivos no s3 privados (nao publicos)
+
+    # Static Assets
+
+    STATICFILES_STORAGE = 's3_folder_storage.s3.StaticStorage'  # classe da bibli para fazer gestao da pasta static
+    STATIC_S3_PATH = 'static'  # path padrao dos arquivos estaticos
+    STATIC_ROOT = f'/{STATIC_S3_PATH}/'
+    STATIC_URL = f'//s3.amazonaws.com/{AWS_STORAGE_BUCKET_NAME}/{STATIC_S3_PATH}/'
+    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
