@@ -15,6 +15,7 @@ install:
 script:
   - pipenv run flake8 . #executa comando flake8
   - pipenv run pytest --cov=olist
+  - cp contrib/env-sample .env
 
 after_success:
   - pipenv run codecov #exibi cobertura apos push
