@@ -37,7 +37,7 @@ class AuthorViewSetTest(TestCase):
     def test_list_with_name(self):
         res = self.client.get(self.url, {'name': 'Bruce Anstey'})
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(res.json()[0]['name'], 'Bruce Anstey')
+        self.assertEqual(res.json()['results'][0]['name'], 'Bruce Anstey')
 
     def test_update(self):
         res = self.client.put(self.url+'3', {'name': 'Mario Persona'}, format='json')

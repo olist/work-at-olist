@@ -8,3 +8,4 @@ class AuthorViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorSerializer
     queryset = Author.objects.all()
     filterset_fields = ('name',)
+    paginate_by = '10'
