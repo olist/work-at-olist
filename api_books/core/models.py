@@ -6,3 +6,6 @@ class Author(models.Model):
 
     def __str__(self):
         return f'Autor: {self.name}'
+
+    def to_dict(self):
+        return dict(name=self.name)
