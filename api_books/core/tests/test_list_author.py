@@ -20,6 +20,11 @@ def resp(client, create_author):
     return client.get('/api/authors')
 
 
+@pytest.fixture
+def resp_by_name(client, create_author):
+    return client.get('/api/authors?name=Author 1')
+
+
 def test_list_authors_status_code(resp):
 
     assert resp.status_code == HTTPStatus.OK
@@ -42,3 +47,18 @@ def test_authors_list(resp):
     assert len(authors_list) == 6
 
     assert resp.json() == exp
+
+
+def test_authors_by_name(resp_by_name):
+
+    exp = {'name': 'Author 1'}
+
+    assert resp_by_name.json() == exp
+
+
+def test_authors_by_name_not_exist(client, db):
+
+    response_404 = client.get('/api/authors?name=No exist')
+
+    assert response_404.status_code == HTTPStatus.NOT_FOUND
+    assert response_404.json() == {'error': 'Author with name No exist not found'}
