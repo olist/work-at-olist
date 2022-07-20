@@ -25,4 +25,4 @@ jobs:
               poetry run flake8
         - name: Rodar testes Automáticos
           run: |
-              poetry run pytest --nomigrations
+              poetry run pytest
