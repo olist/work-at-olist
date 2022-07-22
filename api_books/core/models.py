@@ -8,4 +8,4 @@ class Author(models.Model):
         return f'Autor: {self.name}'
 
     def to_dict(self):
-        return dict(name=self.name)
+        return dict(id=self.id, name=self.name)

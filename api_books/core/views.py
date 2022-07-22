@@ -15,7 +15,7 @@ def authors(resquest):
                 data = author.to_dict()
                 return JsonResponse(data)
             except ObjectDoesNotExist:
-                return JsonResponse({'error': f'Author with name {name} not found'}, status=404)
+                return JsonResponse({'error': f'Author with name {name} not found'})
 
         data = {
             'list': [author.to_dict() for author in Author.objects.all()]
