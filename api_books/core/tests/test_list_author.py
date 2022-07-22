@@ -13,17 +13,61 @@ def authors(db):
     return Author.objects.all()
 
 
-def test_authors_list(client, authors):
+def test_authors_list_with_page_and_page_size(client, authors):
+    '''
+    "previous": "http://testserver/api/authors?page=1&page_size=2"
+    '''
+
+    resp = client.get(resolve_url('authors'), {'page': 2, 'page_size': 2})
+
+    data = resp.json()
+
+    exp = [{'id': a.id, 'name': a.name} for a in authors[2:4]]
+
+    assert len(data['result']) == 2
+    assert data['result'] == exp
+    assert data['count'] == 6
+    assert data['current_page'] == 2
+    # "previous": "http://testserver/api/authors?page=1&page_size=2"
+    assert data['previous'].endswith(f'{resolve_url("authors")}?page=1&page_size=2')
+    # "next": "http://testserver/api/authors?page=1&page_size=2"
+    assert data['next'].endswith(f'{resolve_url("authors")}?page=3&page_size=2')
+
+
+def test_authors_list_without_page_size(client, authors):
+    '''
+    Page size default is 3
+    '''
+
+    resp = client.get(resolve_url('authors'), {'page': 2})
+
+    data = resp.json()
+
+    exp = [{'id': a.id, 'name': a.name} for a in authors[3:]]
+
+    assert len(data['result']) == 3
+    assert data['result'] == exp
+    assert data['count'] == 6
+    assert data['current_page'] == 2
+    assert data['previous'].endswith(f'{resolve_url("authors")}?page=1&page_size=3')
+
+
+def test_authors_list_without_page_and_page_size(client, authors):
+    '''
+    Page size default is 3 and page default 1
+    '''
 
     resp = client.get(resolve_url('authors'))
 
-    exp = {'list': [{'id': a.id, 'name': a.name} for a in authors]}
+    data = resp.json()
 
-    authors_list = resp.json()['list']
+    exp = [{'id': a.id, 'name': a.name} for a in authors[:3]]
 
-    assert len(authors_list) == 6
-
-    assert resp.json() == exp
+    assert len(data['result']) == 3
+    assert data['result'] == exp
+    assert data['count'] == 6
+    assert data['current_page'] == 1
+    assert data['next'].endswith(f'{resolve_url("authors")}?page=2&page_size=3')
 
 
 def test_authors_by_name(client, authors):
