@@ -1,6 +1,6 @@
 from django.http import JsonResponse
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
+from api_books.core.links import LinkPaginator
 
 from api_books.core.models import Author
 
@@ -13,35 +13,31 @@ def authors(request):
 
     if request.method == 'GET':
 
-        name = request.GET.get('name')
-        if name:
-            try:
-                author = Author.objects.get(name=name)
-                data = author.to_dict()
-                return JsonResponse(data)
-            except ObjectDoesNotExist:
-                return JsonResponse({'error': f'Author with name {name} not found'})
-
         page_number = int(request.GET.get('page', PAGE_NUMBER))
         page_size = request.GET.get('page_size', PAGE_SIZE)
 
         queryset = Author.objects.all()
 
+        name = request.GET.get('name')
+        if name:
+            queryset = queryset.filter(name__icontains=name)
+
         paginator = Paginator(queryset, page_size)
         page = paginator.page(page_number)
 
+        result = [author.to_dict() for author in page.object_list]
+        if not result:
+            return JsonResponse({'error': f'Author with name {name} not found'})
+
         data = {
-            'result': [author.to_dict() for author in page.object_list],
+            'result': result,
             'count': paginator.count,
             'current_page': page_number
         }
 
-        if page.has_previous():
-            n = page.previous_page_number()
-            data['previous'] = request.build_absolute_uri(f'/api/authors?page={n}&page_size={page_size}')
-        if page.has_next():
-            n = page.next_page_number()
-            data['next'] = request.build_absolute_uri(f'/api/authors?page={n}&page_size={page_size}')
+        links = LinkPaginator(request, name, page)
+
+        data.update(links.adjacent_pages())
 
         return JsonResponse(data)
 
