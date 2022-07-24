@@ -24,17 +24,6 @@ def test_clean_name_strip(cmd):
     assert cmd._clean_name(' teste ') == 'teste'
 
 
-def test_import_csv_number(mocker, cmd, db):
-
-    csv_mocker = mocker.patch('api_books.core.management.commands.import_csv.csv')
-    mocker.patch('api_books.core.management.commands.import_csv.open')
-
-    csv_mocker.reader = mock_csv_reader
-
-    cmd.handle(file_name='')
-    assert Author.objects.count() == 4
-
-
 def test_import_csv_names(mocker, cmd, db):
 
     csv_mocker = mocker.patch('api_books.core.management.commands.import_csv.csv')
@@ -43,6 +32,8 @@ def test_import_csv_names(mocker, cmd, db):
     csv_mocker.reader = mock_csv_reader
 
     cmd.handle(file_name='')
+
+    assert Author.objects.count() == 4
 
     for autor, exp in zip(Author.objects.all(), CSV_FILE.split()[1:]):
         assert autor.name == exp
