@@ -22,3 +22,12 @@ class Book(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.publication_year}'
+
+    def to_dict(self):
+        return dict(
+            id=self.id,
+            name=self.name,
+            edition=self.edition,
+            publication_year=self.publication_year,
+            authors=[a.name for a in self.authors.all()]  # TODO transformar isso em um função
+        )

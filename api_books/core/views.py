@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from api_books.core.links import LinkPaginator
 
-from api_books.core.models import Author
+from api_books.core.models import Author, Book
 
 
 PAGE_NUMBER = 1
@@ -42,3 +42,10 @@ def authors(request):
         return JsonResponse(data)
 
     return JsonResponse({})
+
+
+def books(request):
+
+    data = {'result': [b.to_dict() for b in Book.objects.all()]}
+
+    return JsonResponse(data)

@@ -22,3 +22,16 @@ def test_book_authors_name(authors, book):
 def test_book_str(book):
 
     assert str(book) == f'{book.name} - {book.publication_year}'
+
+
+def test_book_to_dict(book):
+
+    expected = {
+        'id': book.id,
+        'name': book.name,
+        'edition': book.edition,
+        'publication_year':  book.publication_year,
+        'authors': [a.name for a in book.authors.all()]
+    }
+
+    assert book.to_dict() == expected
